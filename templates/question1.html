@@ -47,58 +47,62 @@
   <section id="starter-section" class="starter-section section">
     <div class="container section-title" data-aos="fade-up">
       <h2>Question 1</h2>
-      <p>What is my favourite animal?</p>
+      <p>What is my favourite animal?(this is so easy)</p>
     </div>
 
     <div class="container" data-aos="fade-up" style="text-align:center; margin-top:30px;">
-      <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
+      <div style="display:flex; justify-content:center; gap:40px; flex-wrap:wrap;">
 
         <!-- Quokka (Correct Answer) -->
-        <a href="{{ url_for('answer_quokka') }}">
-          <img src="{{ url_for('static', filename='img/quokka.jpg') }}" alt="Quokka"
-               style="height:150px; width:auto; border-radius:10px; cursor:pointer;"/>
-        </a>
+        <div style="text-align:center;">
+  <a href="{{ url_for('answer_quokka') }}">
+    <img src="{{ url_for('static', filename='img/quokka.jpg') }}" alt="Quokka"
+         style="height:150px; width:auto; border-radius:10px; cursor:pointer;"/>
+  </a>
+  <p style="margin-top:10px; font-weight:bold;">Quokka</p>
+  <p style="font-size:12px; color:gray;">Pick me, I’m the cutest!</p>
+</div>
+
+
 
         <!-- Bison -->
-        <a href="{{ url_for('question2') }}">
-          <img src="{{ url_for('static', filename='img/bison.jpg') }}" alt="Bison"
-               style="height:150px; width:auto; border-radius:10px; cursor:pointer;"/>
-        </a>
+        <div style="text-align:center;">
+          <a href="{{ url_for('question2') }}">
+            <img src="{{ url_for('static', filename='img/bison.jpg') }}" alt="Bison"
+                 style="height:150px; width:auto; border-radius:10px; cursor:pointer;"/>
+          </a>
+          <p style="margin-top:10px; font-weight:bold;">Bison</p>
+        </div>
 
         <!-- Tarantula -->
-        <a href="{{ url_for('question2') }}">
-          <img src="{{ url_for('static', filename='img/tarantula.jpg') }}" alt="Tarantula"
-               style="height:150px; width:auto; border-radius:10px; cursor:pointer;"/>
-        </a>
+        <div style="text-align:center;">
+          <a href="{{ url_for('question2') }}">
+            <img src="{{ url_for('static', filename='img/tarantula.jpg') }}" alt="Tarantula"
+                 style="height:150px; width:auto; border-radius:10px; cursor:pointer;"/>
+          </a>
+          <p style="margin-top:10px; font-weight:bold;">Tarantula</p>
+        </div>
 
         <!-- Penguin -->
-        <a href="{{ url_for('question2') }}">
-          <img src="{{ url_for('static', filename='img/penguin.png') }}" alt="Penguin"
-               style="height:150px; width:auto; border-radius:10px; cursor:pointer;"/>
-        </a>
+        <div style="text-align:center;">
+          <a href="{{ url_for('question2') }}">
+            <img src="{{ url_for('static', filename='img/penguin.png') }}" alt="Penguin"
+                 style="height:150px; width:auto; border-radius:10px; cursor:pointer;"/>
+          </a>
+          <p style="margin-top:10px; font-weight:bold;">Penguin</p>
+        </div>
+
       </div>
     </div>
   </section>
 </main>
 
 
-
-
-
-<!-- Inline Counter Script -->
-<script>
-  let count = 0;
-  function incrementCounter() {
-    count++;
-    document.getElementById("counter").innerText = count;
-  }
-</script>
-
   <!-- Footer -->
   <footer id="footer" class="footer">
     <div class="container">
       <div class="copyright text-center">
-        <p>© <strong class="px-1 sitename">For Caity</strong> All Rights Reserved</p>
+        <p>© <strong class="px-1 sitename">For YOU</strong>You've got this one baby</p>
       </div>
       <div class="credits">
         Designed by <a href="https://genius.com/artists/The-greatest-technician-thats-ever-lived">The Greatest Technician That's Ever Lived</a>
