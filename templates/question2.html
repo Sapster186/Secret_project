@@ -29,33 +29,85 @@
 <body class="starter-page-page">
 
   <!-- Header (empty for now, no nav or social links) -->
-  <header id="header" class="header d-flex align-items-center light-background sticky-top">
-    <div class="container position-relative d-flex align-items-center justify-content-between">
-      <!-- Navigation removed -->
-    </div>
-  </header>
+<header id="header" class="header d-flex align-items-center light-background sticky-top">
+  <div class="container position-relative d-flex align-items-center justify-content-between">
 
-  <!-- Main Content -->
-  <main class="main">
-    <section id="starter-section" class="starter-section section">
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Starter Section</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+    <!-- Logo linking back to home route -->
+    <a href="{{ url_for('home') }}" style="display:inline-block;">
+      <img src="{{ url_for('static', filename='img/jeffy.png') }}" alt="Logo"
+           style="height:50px; width:auto; display:block;"/>
+    </a>
+
+    <!-- Navigation removed -->
+  </div>
+</header>
+
+
+
+
+
+<!-- Main Content -->
+<main class="main">
+  <section id="starter-section" class="starter-section section">
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Question 2</h2>
+      <p>Which fictional villain is most stylish?</p>
+    </div>
+
+    <div class="container" data-aos="fade-up" style="text-align:center; margin-top:30px;">
+      <div style="display:flex; justify-content:center; gap:40px; flex-wrap:wrap;">
+
+        <!-- Maleficent -->
+        <div style="text-align:center;">
+          <a href="{{ url_for('question3') }}">
+            <img src="{{ url_for('static', filename='img/maleficent.jpg') }}" alt="Maleficent"
+                 style="height:150px; width:auto; border-radius:10px; cursor:pointer;"/>
+          </a>
+          <p style="margin-top:10px; font-weight:bold;">Maleficent</p>
+        </div>
+
+        <!-- Loki -->
+        <div style="text-align:center;">
+          <a href="{{ url_for('question3') }}">
+            <img src="{{ url_for('static', filename='img/loki.jpg') }}" alt="Loki"
+                 style="height:150px; width:auto; border-radius:10px; cursor:pointer;"/>
+          </a>
+          <p style="margin-top:10px; font-weight:bold;">Loki</p>
+        </div>
+
+        <!-- Cruella (Correct Answer) -->
+        <div style="text-align:center;">
+          <a href="{{ url_for('answer_cruella') }}">
+            <img src="{{ url_for('static', filename='img/cruella.jpg') }}" alt="Cruella"
+                 style="height:150px; width:auto; border-radius:10px; cursor:pointer;"/>
+          </a>
+          <p style="margin-top:10px; font-weight:bold;">Cruella</p>
+        </div>
+
+        <!-- Darth Vader -->
+        <div style="text-align:center;">
+          <a href="{{ url_for('question3') }}">
+            <img src="{{ url_for('static', filename='img/vader.jpg') }}" alt="Darth Vader"
+                 style="height:150px; width:auto; border-radius:10px; cursor:pointer;"/>
+          </a>
+          <p style="margin-top:10px; font-weight:bold;">Darth Vader</p>
+        </div>
+
       </div>
-      <div class="container" data-aos="fade-up">
-        <p>Use this page as a starter for your own custom pages.</p>
-      </div>
-    </section>
-  </main>
+    </div>
+  </section>
+</main>
+
+
 
   <!-- Footer -->
   <footer id="footer" class="footer">
     <div class="container">
       <div class="copyright text-center">
-        <p>© <strong class="px-1 sitename">For Caity</strong> All Rights Reserved</p>
+        <p>© <strong class="px-1 sitename">For the Empire</strong> Protected by Imperial law</p>
       </div>
       <div class="credits">
-        Designed by <a href="https://genius.com/artists/The-greatest-technician-thats-ever-lived">The Greatest Technician That's Ever Lived</a>
+        Designed by <a href="https://starwars.fandom.com/wiki/Galen_Walton_Erso">Galen Erso</a>
       </div>
     </div>
   </footer>

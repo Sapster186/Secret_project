@@ -29,24 +29,43 @@
 <body class="starter-page-page">
 
   <!-- Header (empty for now, no nav or social links) -->
-  <header id="header" class="header d-flex align-items-center light-background sticky-top">
-    <div class="container position-relative d-flex align-items-center justify-content-between">
-      <!-- Navigation removed -->
-    </div>
-  </header>
+<header id="header" class="header d-flex align-items-center light-background sticky-top">
+  <div class="container position-relative d-flex align-items-center justify-content-between">
 
-  <!-- Main Content -->
-  <main class="main">
-    <section id="starter-section" class="starter-section section">
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Starter Section</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-      </div>
-      <div class="container" data-aos="fade-up">
-        <p>Use this page as a starter for your own custom pages.</p>
-      </div>
-    </section>
-  </main>
+    <!-- Logo linking back to home route -->
+    <a href="{{ url_for('home') }}" style="display:inline-block;">
+      <img src="{{ url_for('static', filename='img/jeffy.png') }}" alt="Logo"
+           style="height:50px; width:auto; display:block;"/>
+    </a>
+
+    <!-- Navigation removed -->
+  </div>
+</header>
+
+
+
+
+
+
+<!-- Main Content -->
+<main class="main">
+  <section id="starter-section" class="starter-section section">
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Aww okay then...</h2>
+      <p>Bye bye 😢</p>
+    </div>
+    <div class="container" data-aos="fade-up" style="text-align:center; margin-top:30px;">
+      <p style="font-size:1.2rem; color:#555;">
+        Click the Jeff if you change your mind :)
+      </p>
+      <a href="{{ url_for('home') }}">
+        <img src="{{ url_for('static', filename='img/jeffy.png') }}" alt="Jeffy"
+             style="height:100px; width:auto; margin-top:20px;"/>
+      </a>
+    </div>
+  </section>
+</main>
+
 
   <!-- Footer -->
   <footer id="footer" class="footer">
