@@ -33,10 +33,18 @@
   <div class="container position-relative d-flex align-items-center justify-content-between">
 
     <!-- Logo linking back to home route -->
-    <a href="{{ url_for('home') }}" style="display:inline-block;">
-      <img src="{{ url_for('static', filename='img/jeffy.png') }}" alt="Logo"
-           style="height:50px; width:auto; display:block;"/>
-    </a>
+<header style="display:flex; align-items:center; gap:10px;">
+  <a href="{{ url_for('home') }}" style="display:flex; align-items:center; text-decoration:none;">
+    <img src="{{ url_for('static', filename='img/jeffy.png') }}" alt="Logo"
+         style="height:50px; width:auto;"/>
+    <span style="font-family:'Sacramento', cursive; font-size:2rem; color:white;">
+      Caity's Present
+    </span>
+  </a>
+</header>
+
+
+
 
     <!-- Navigation removed -->
   </div>
@@ -47,7 +55,7 @@
   <section id="starter-section" class="starter-section section">
     <div class="container section-title" data-aos="fade-up">
       <h2>Question 1</h2>
-      <p>What is my favourite animal?(this is so easy)</p>
+      <p>What is my favourite animal?(this is so easy baby)</p>
     </div>
 
     <div class="container" data-aos="fade-up" style="text-align:center; margin-top:30px;">
@@ -60,7 +68,7 @@
          style="height:150px; width:auto; border-radius:10px; cursor:pointer;"/>
   </a>
   <p style="margin-top:10px; font-weight:bold;">Quokka</p>
-  <p style="font-size:12px; color:gray;">Pick me, I’m the cutest!</p>
+  <p style="font-size:12px; color:gray;">Pick me!, I’m the toughest!</p>
 </div>
 
 

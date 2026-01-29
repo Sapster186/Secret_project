@@ -36,6 +36,17 @@ def secret():
 def secret_segue():
     return render_template("secret-segue.html", score=session.get("score", 0))
 
+@app.route('/coming-soon')
+def coming_soon():
+    return render_template('coming-soon.html')
+
+# Hangman game page
+@app.route('/hangman')
+def hangman():
+    return render_template('hangman.html')
+
+
+
 # --- Answer routes for correct options ---
 
 @app.route("/answer_quokka")

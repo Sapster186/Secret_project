@@ -32,11 +32,19 @@
 <header id="header" class="header d-flex align-items-center light-background sticky-top">
   <div class="container position-relative d-flex align-items-center justify-content-between">
 
-    <!-- Logo linking back to home route -->
-    <a href="{{ url_for('home') }}" style="display:inline-block;">
-      <img src="{{ url_for('static', filename='img/jeffy.png') }}" alt="Logo"
-           style="height:50px; width:auto; display:block;"/>
-    </a>
+
+<header style="display:flex; align-items:center; gap:10px;">
+  <a href="{{ url_for('home') }}" style="display:flex; align-items:center; text-decoration:none;">
+    <img src="{{ url_for('static', filename='img/jeffy.png') }}" alt="Logo"
+         style="height:50px; width:auto;"/>
+    <span style="font-family:'Sacramento', cursive; font-size:2rem; color:white;">
+      Caity's Present
+    </span>
+  </a>
+</header>
+
+
+
 
     <!-- Navigation removed -->
   </div>
@@ -56,13 +64,15 @@
     </div>
     <div class="container" data-aos="fade-up">
       <p>So I took around 12 hours to make this website that you'll finish in 10 Minutes!</p>
-      <p>So worth it right</p>
+      <p>So worth it right!</p>
+      <p>Btw there's a lil surprise for you at the end and then more to play for!
+      <p>I do hope you enjoy!</p>
     </div>
 
     <!-- Ready Section -->
     <div class="container" data-aos="fade-up" style="text-align:center; margin-top:30px;">
       <h3 style="font-size:1.8rem; margin-bottom:20px; color:#fff; font-weight:bold;">
-        Are you ready?
+        Are you ready to RUMBLEEE?
       </h3>
       <div style="display:flex; justify-content:center; gap:20px;">
 
@@ -88,8 +98,25 @@
 
       </div>
     </div>
+
+    <!-- Surprise Section -->
+    <div class="container" data-aos="fade-up" style="text-align:center; margin-top:50px;">
+      <h3 style="font-size:1.5rem; margin-bottom:20px; color:#fff; font-weight:bold;">
+        Already completed the journey?
+      </h3>
+      <p>Click below for a surprise!</p>
+      <a href="{{ url_for('coming_soon') }}"
+         style="display:inline-block; text-decoration:none; transition:all 0.3s ease;">
+        <img src="{{ url_for('static', filename='img/jeffy.png') }}"
+             alt="Jeffy Surprise"
+             style="width:200px; border-radius:15px; box-shadow:0px 6px 15px rgba(0,0,0,0.3);">
+      </a>
+    </div>
+
   </section>
 </main>
+
+
 
 
 
