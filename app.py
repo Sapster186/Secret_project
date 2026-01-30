@@ -1,10 +1,14 @@
 from flask import Flask, render_template, session, redirect, url_for
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 app = Flask(__name__)
 
 # Use environment variable for secret key (best practice)
-app.secret_key = os.environ.get("FLASK_SECRET_KEY", "fallback-secret")
+app.secret_key = os.environ.get("SECRET_KEY", "fallback-secret")
+
+
 
 @app.route("/")
 def home():
