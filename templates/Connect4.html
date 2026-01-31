@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caity's Present</title>
+
+  <link rel="icon" href="{{ url_for('static', filename='img/heart-hands.png') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/heart-hands.png') }}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/aos/aos.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+</head>
+
+<body class="starter-page-page">
+
+<header id="header" class="header d-flex align-items-center light-background sticky-top">
+  <div class="container d-flex align-items-center justify-content-between">
+    <a href="{{ url_for('home') }}" class="d-flex align-items-center text-decoration-none">
+      <img src="{{ url_for('static', filename='img/jeffy.png') }}" style="height:50px;">
+      <span class="ms-2 text-white fs-3">Caity's Present</span>
+    </a>
+  </div>
+</header>
+
+<!-- ================= GAME UI ================= -->
+
+<div class="container text-center my-5">
+
+  <h3 id="status">Choose a mode to start!</h3>
+
+  <div id="mode-select" class="mb-3">
+    <button class="btn btn-danger me-2" onclick="setMode('pvp')">Player vs Player</button>
+    <button class="btn btn-warning me-3" onclick="setMode('ai')">Player vs AI</button>
+
+    <select id="difficulty" class="form-select d-inline-block w-auto">
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+  </div>
+
+  <div class="mb-3 fs-5">
+    🔴 <span id="red-score">0</span>
+    &nbsp;&nbsp;
+    🟡 <span id="yellow-score">0</span>
+  </div>
+
+  <div id="board" class="mx-auto"></div>
+
+  <button id="play-again" class="btn btn-primary mt-3" style="display:none;" onclick="resetGame()">
+    Play Again
+  </button>
+
+</div>
+
+<!-- ================= GAME STYLES ================= -->
+
+<style>
+
+#board {
+  width: max-content;          /* 🔑 prevents stretching */
+  margin: 0 auto;              /* hard centre */
+  display: grid;
+  grid-template-columns: repeat(7, 70px);
+  grid-template-rows: repeat(6, 70px);
+  gap: 8px;
+
+  background: linear-gradient(135deg, #0077ff, #00c6ff);
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.cell {
+  border-radius: 50%;
+  background: #f0f0f0;
+  position: relative;
+  cursor: pointer;
+}
+
+.piece {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  top: -100%;
+  animation: drop 0.5s forwards;
+}
+
+.red { background: radial-gradient(circle, #ff4d4d, #b30000); }
+.yellow { background: radial-gradient(circle, #ffe066, #cc9900); }
+.ghost { opacity: 0.4; }
+
+.win-highlight {
+  box-shadow: 0 0 15px gold;
+}
+
+@keyframes drop { to { top: 0; } }
+</style>
+
+<!-- ================= GAME SCRIPT ================= -->
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+const ROWS = 6, COLS = 7;
+let currentPlayer = 'red';
+let boardState = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
+let mode = null;
+let redScore = 0, yellowScore = 0;
+let gameOver = false;
+
+const board = document.getElementById('board');
+const status = document.getElementById('status');
+const playAgainBtn = document.getElementById('play-again');
+const redScoreEl = document.getElementById('red-score');
+const yellowScoreEl = document.getElementById('yellow-score');
+
+window.setMode = function(selected) {
+  mode = selected;
+  document.getElementById('mode-select').style.display = 'none';
+  resetBoard();
+  status.innerHTML = `${currentPlayer.toUpperCase()} starts!`;
+}
+
+function resetBoard() {
+  boardState = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
+  board.innerHTML = '';
+  currentPlayer = 'red';
+  gameOver = false;
+  playAgainBtn.style.display = 'none';
+
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.dataset.col = c;
+      board.appendChild(cell);
+    }
+  }
+}
+
+board.addEventListener('click', e => {
+  if (!e.target.classList.contains('cell') || gameOver) return;
+  if (mode === 'ai' && currentPlayer !== 'red') return;
+
+  makeMove(+e.target.dataset.col);
+  if (mode === 'ai' && !gameOver) setTimeout(aiMove, 400);
+});
+
+function makeMove(col) {
+  let row = ROWS - 1;
+  while (row >= 0 && boardState[row][col]) row--;
+  if (row < 0) return;
+
+  boardState[row][col] = currentPlayer;
+  board.children[row * COLS + col].appendChild(makePiece(currentPlayer));
+
+  if (checkWin(row, col)) return endGame();
+  if (boardState[0].every(x => x)) return status.textContent = "Draw!";
+
+  currentPlayer = currentPlayer === 'red' ? 'yellow' : 'red';
+  status.textContent = `${currentPlayer.toUpperCase()}'s turn`;
+}
+
+function aiMove() {
+  const valid = [...Array(COLS).keys()].filter(c => !boardState[0][c]);
+  makeMove(valid[Math.floor(Math.random() * valid.length)]);
+}
+
+function makePiece(player) {
+  const p = document.createElement('div');
+  p.className = `piece ${player}`;
+  return p;
+}
+
+function checkWin(r, c) {
+  const dirs = [[0,1],[1,0],[1,1],[1,-1]];
+  return dirs.some(([dr,dc]) => {
+    let count = 1;
+    for (let d of [1,-1])
+      for (let i=1;i<4;i++) {
+        const nr=r+dr*i*d, nc=c+dc*i*d;
+        if (!boardState[nr]?.[nc] || boardState[nr][nc] !== currentPlayer) break;
+        count++;
+      }
+    return count >= 4;
+  });
+}
+
+function endGame() {
+  gameOver = true;
+  status.textContent = `${currentPlayer.toUpperCase()} wins! 🎉`;
+  playAgainBtn.style.display = 'inline-block';
+  currentPlayer === 'red' ? redScoreEl.textContent = ++redScore
+                          : yellowScoreEl.textContent = ++yellowScore;
+}
+
+window.resetGame = function() {
+  document.getElementById('mode-select').style.display = 'block';
+  status.textContent = "Choose a mode to start!";
+  board.innerHTML = '';
+};
+
+});
+</script>
+
+<footer class="footer text-center mt-5">
+  <p>© For Caity 💖</p>
+</footer>
+
+</body>
+</html>
