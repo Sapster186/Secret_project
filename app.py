@@ -54,6 +54,11 @@ def hangman():
 def connect4():
     return render_template("connect4.html")
 
+@app.route("/tic-tac-toe")
+def tictactoe():
+    return render_template("tictactoe.html")
+
+
 
 
 

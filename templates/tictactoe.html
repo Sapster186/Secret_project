@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caity's Present</title>
+
+  <!-- Favicons -->
+  <link rel="icon" href="{{ url_for('static', filename='img/heart-hands.png') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/heart-hands.png') }}">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/aos/aos.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+</head>
+
+<body class="starter-page-page">
+
+<header id="header" class="header d-flex align-items-center light-background sticky-top">
+  <div class="container position-relative d-flex align-items-center justify-content-between">
+
+    <!-- Logo linking back to home route -->
+<header style="display:flex; align-items:center; gap:10px;">
+  <a href="{{ url_for('home') }}" style="display:flex; align-items:center; text-decoration:none;">
+    <img src="{{ url_for('static', filename='img/jeffy.png') }}" alt="Logo"
+         style="height:50px; width:auto;"/>
+    <span style="font-family:'Sacramento', cursive; font-size:2rem; color:white;">
+      Caity's Present
+    </span>
+  </a>
+</header>
+
+
+
+
+    <!-- Navigation removed -->
+  </div>
+</header>
+
+
+
+
+
+<main class="main">
+  <section id="starter-section" class="starter-section section">
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Tic Tac Toe</h2>
+      <p>Play 1v1 or challenge the AI(dw its not a real ai chatgpt sux)</p>
+    </div>
+
+    <div class="container" data-aos="fade-up">
+      <!-- Mode Selection -->
+      <div id="mode-select">
+        <button onclick="setMode('pvp')">1 vs 1</button>
+        <button onclick="setMode('easy')">AI Easy</button>
+        <button onclick="setMode('medium')">AI Medium</button>
+        <button onclick="setMode('hard')">AI Hard</button>
+      </div>
+
+      <!-- Game Board -->
+      <div id="board" class="board"></div>
+
+      <!-- Controls -->
+      <div id="controls">
+        <button onclick="resetBoard()">Reset</button>
+        <button onclick="playAgain()">Play Again</button>
+      </div>
+
+      <!-- Status -->
+      <p id="status">Choose a mode to start!</p>
+    </div>
+  </section>
+</main>
+
+<style>
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
+    margin: 20px auto;
+    width: max-content;
+  }
+
+  .cell {
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    cursor: pointer;
+    border: 2px solid #ccc;
+    transition: background 0.3s;
+  }
+  .cell.x {
+    color: red;
+    font-weight: bold;
+  }
+  .cell.o {
+    color: blue;
+    font-weight: bold;
+  }
+
+  .cell.win-x {
+    background: rgba(255, 0, 0, 0.3); /* red glow */
+    animation: glowX 1s infinite alternate;
+    }
+  .cell.win-o {
+    background: rgba(0, 0, 255, 0.3); /* blue glow */
+    animation: glowO 1s infinite alternate;
+}
+
+  @keyframes glowX {
+    from { box-shadow: 0 0 5px red; }
+    to   { box-shadow: 0 0 20px red; }
+}
+  @keyframes glowO {
+    from { box-shadow: 0 0 5px blue; }
+    to   { box-shadow: 0 0 20px blue; }
+}
+
+
+
+  #mode-select button, #controls button {
+    margin: 5px;
+    padding: 10px 15px;
+    font-size: 1em;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+  }
+  #mode-select button:hover {
+    background: #e0e0e0;
+  }
+  #controls button:hover {
+    background: #d0d0ff;
+    color: blue;
+  }
+
+</style>
+
+<script>
+  let board = Array(9).fill(null);
+  let currentPlayer = "X";
+  let mode = null;
+  let gameOver = false;
+
+  const boardDiv = document.getElementById("board");
+  const statusDiv = document.getElementById("status");
+
+  // Initialize board
+  function initBoard() {
+    boardDiv.innerHTML = "";
+    board.forEach((_, i) => {
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      cell.dataset.index = i;
+      cell.addEventListener("click", () => handleMove(i));
+      boardDiv.appendChild(cell);
+    });
+  }
+
+  function setMode(selectedMode) {
+    mode = selectedMode;
+    resetBoard();
+    statusDiv.textContent = `Mode: ${mode.toUpperCase()} - Player X starts`;
+  }
+
+function handleMove(i) {
+  // Prevent moves if mode not selected
+  if (!mode) {
+    statusDiv.textContent = "Please select a mode first!";
+    return;
+  }
+
+  if (gameOver || board[i]) return;
+
+  board[i] = currentPlayer;
+  renderBoard();
+
+  if (checkWinner()) {
+    statusDiv.textContent = `${currentPlayer} wins!`;
+    gameOver = true;
+    return;
+  }
+
+  if (board.every(cell => cell)) {
+    statusDiv.textContent = "It's a draw!";
+    gameOver = true;
+    return;
+  }
+
+  currentPlayer = currentPlayer === "X" ? "O" : "X";
+  statusDiv.textContent = `Turn: ${currentPlayer}`;
+
+  if (mode !== "pvp" && currentPlayer === "O") aiMove();
+}
+
+  function aiMove() {
+    let move;
+    if (mode === "easy") {
+      // Random move
+      const empty = board.map((v, i) => v ? null : i).filter(v => v !== null);
+      move = empty[Math.floor(Math.random() * empty.length)];
+    } else if (mode === "medium") {
+      // Try to win or block, else random
+      move = findBestMove("O") || findBestMove("X") || randomMove();
+    } else if (mode === "hard") {
+      // Minimax
+      move = minimax(board, "O").index;
+    }
+    handleMove(move);
+  }
+
+  function randomMove() {
+    const empty = board.map((v, i) => v ? null : i).filter(v => v !== null);
+    return empty[Math.floor(Math.random() * empty.length)];
+  }
+
+  function findBestMove(player) {
+    const winPatterns = [
+      [0,1,2],[3,4,5],[6,7,8],
+      [0,3,6],[1,4,7],[2,5,8],
+      [0,4,8],[2,4,6]
+    ];
+    for (let pattern of winPatterns) {
+      const values = pattern.map(i => board[i]);
+      if (values.filter(v => v === player).length === 2 && values.includes(null)) {
+        return pattern[values.indexOf(null)];
+      }
+    }
+    return null;
+  }
+
+  function minimax(newBoard, player) {
+    const availSpots = newBoard.map((v, i) => v ? null : i).filter(v => v !== null);
+    if (checkWinnerFor(newBoard, "X")) return {score: -10};
+    if (checkWinnerFor(newBoard, "O")) return {score: 10};
+    if (availSpots.length === 0) return {score: 0};
+
+    const moves = [];
+    for (let i of availSpots) {
+      const move = {index: i};
+      newBoard[i] = player;
+      const result = minimax(newBoard, player === "O" ? "X" : "O");
+      move.score = result.score;
+      newBoard[i] = null;
+      moves.push(move);
+    }
+    let bestMove;
+    if (player === "O") {
+      bestMove = moves.reduce((a, b) => a.score > b.score ? a : b);
+    } else {
+      bestMove = moves.reduce((a, b) => a.score < b.score ? a : b);
+    }
+    return bestMove;
+  }
+
+  function checkWinner() {
+  const winPatterns = [
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+  ];
+  for (let pattern of winPatterns) {
+    if (pattern.every(i => board[i] === currentPlayer)) {
+      // Highlight winning cells
+      pattern.forEach(i => {
+        const cell = boardDiv.children[i];
+        cell.classList.add(currentPlayer === "X" ? "win-x" : "win-o");
+      });
+      return true;
+    }
+  }
+  return false;
+}
+
+
+
+  function checkWinnerFor(b, player) {
+    const winPatterns = [
+      [0,1,2],[3,4,5],[6,7,8],
+      [0,3,6],[1,4,7],[2,5,8],
+      [0,4,8],[2,4,6]
+    ];
+    return winPatterns.some(pattern => pattern.every(i => b[i] === player));
+  }
+
+  function renderBoard() {
+    [...boardDiv.children].forEach((cell, i) => {
+      cell.textContent = board[i] || "";
+      cell.classList.remove("x", "o");
+      if (board[i] === "X") cell.classList.add("x");
+      if (board[i] === "O") cell.classList.add("o");
+    });
+  }
+
+
+  function resetBoard() {
+    board = Array(9).fill(null);
+    currentPlayer = "X";
+    gameOver = false;
+    initBoard();
+    statusDiv.textContent = "Board reset. Player X starts.";
+  }
+
+  function playAgain() {
+    resetBoard();
+    statusDiv.textContent = `Mode: ${mode ? mode.toUpperCase() : "Select Mode"} - Player X starts`;
+  }
+
+  initBoard();
+</script>
+
+  <!-- Footer -->
+  <footer id="footer" class="footer">
+    <div class="container">
+      <div class="copyright text-center">
+        <p>© <strong class="px-1 sitename">For Caity</strong> All Rights Reserved</p>
+      </div>
+      <div class="credits">
+        Designed by <a href="https://genius.com/artists/The-greatest-technician-thats-ever-lived">The Greatest Technician That's Ever Lived</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/php-email-form/validate.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/aos/aos.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/typed.js/typed.umd.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/waypoints/noframework.waypoints.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/purecounter/purecounter_vanilla.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/imagesloaded/imagesloaded.pkgd.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/glightbox/js/glightbox.min.js') }}"></script>
+
+  <!-- Main JS File -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>
+
