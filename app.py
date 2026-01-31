@@ -50,6 +50,12 @@ def hangman():
     return render_template('hangman.html')
 
 
+@app.route("/connect4")
+def connect4():
+    return render_template("connect4.html")
+
+
+
 
 # --- Answer routes for correct options ---
 
